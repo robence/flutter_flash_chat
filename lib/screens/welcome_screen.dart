@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flash_chat/constants.dart';
 import 'package:flutter_flash_chat/screens/login_screen.dart';
@@ -67,12 +68,19 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         height: 60.0,
                       ),
                     ),
-                    Text(
-                      'Flash Chat',
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                            fontSize: 40.0,
-                            fontWeight: FontWeight.w900,
-                          ),
+                    AnimatedTextKit(
+                      totalRepeatCount: 4,
+                      animatedTexts: [
+                        TypewriterAnimatedText(
+                          'Flash Chat',
+                          textStyle:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    fontSize: 40.0,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                          speed: const Duration(milliseconds: 200),
+                        ),
+                      ],
                     ),
                   ],
                 ),
