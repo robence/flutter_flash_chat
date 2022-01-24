@@ -15,7 +15,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController controller;
-  late final Animation<double> animation;
+  late final Animation animation;
 
   @override
   initState() {
@@ -24,18 +24,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
-    animation = CurvedAnimation(
-      parent: controller,
-      curve: Curves.decelerate,
-    );
+    animation =
+        ColorTween(begin: Colors.red, end: Colors.blue).animate(controller);
 
     controller.forward();
   }
 
   @override
   void dispose() {
-    super.dispose();
     controller.dispose();
+    super.dispose();
   }
 
   goToLogin() {
@@ -48,25 +46,25 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AnimatedBuilder(
-              animation: controller,
-              builder: (context, child) {
-                return Row(
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, widget) {
+        return Scaffold(
+          backgroundColor: animation.value,
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
                   children: [
                     Hero(
                       tag: kHeroLogo,
                       transitionOnUserGestures: true,
                       child: SizedBox(
                         child: Image.asset('images/logo.png'),
-                        height: animation.value * 100,
+                        height: 60.0,
                       ),
                     ),
                     Text(
@@ -77,47 +75,47 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           ),
                     ),
                   ],
-                );
-              },
-            ),
-            const SizedBox(
-              height: 48.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                elevation: 5.0,
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                child: MaterialButton(
-                  onPressed: goToLogin,
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: const Text(
-                    'Log In',
+                ),
+                const SizedBox(
+                  height: 48.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Material(
+                    elevation: 5.0,
+                    color: Colors.lightBlueAccent,
+                    borderRadius: BorderRadius.circular(30.0),
+                    child: MaterialButton(
+                      onPressed: goToLogin,
+                      minWidth: 200.0,
+                      height: 42.0,
+                      child: const Text(
+                        'Log In',
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: goToRegister,
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: const Text(
-                    'Register',
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Material(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.circular(30.0),
+                    elevation: 5.0,
+                    child: MaterialButton(
+                      onPressed: goToRegister,
+                      minWidth: 200.0,
+                      height: 42.0,
+                      child: const Text(
+                        'Register',
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
