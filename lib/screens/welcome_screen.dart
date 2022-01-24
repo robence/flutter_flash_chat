@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flash_chat/constants.dart';
 import 'package:flutter_flash_chat/screens/login_screen.dart';
 import 'package:flutter_flash_chat/screens/registration_screen.dart';
 
@@ -32,9 +33,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                SizedBox(
-                  child: Image.asset('images/logo.png'),
-                  height: 60.0,
+                Hero(
+                  tag: heroLogo,
+                  transitionOnUserGestures: true,
+                  child: SizedBox(
+                    child: Image.asset('images/logo.png'),
+                    height: 60.0,
+                  ),
                 ),
                 const Text(
                   'Flash Chat',
