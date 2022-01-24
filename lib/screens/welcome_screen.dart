@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  static const name = '/';
+
   const WelcomeScreen({Key? key}) : super(key: key);
 
   @override
