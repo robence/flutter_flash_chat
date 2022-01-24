@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flash_chat/constants.dart';
+import 'package:flutter_flash_chat/screens/chat_screen.dart';
 import 'package:flutter_flash_chat/widgets/screen_buttons.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -12,6 +14,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  final auth = FirebaseAuth.instance;
   var email = '';
   var password = '';
 
@@ -39,9 +42,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             TextField(
               keyboardType: TextInputType.emailAddress,
               onChanged: (value) {
-                setState(() {
-                  email = value;
-                });
+                email = value;
               },
               decoration: kTextFieldDecoration.copyWith(
                 hintText: 'Enter your email',
@@ -54,9 +55,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             TextField(
               obscureText: true,
               onChanged: (value) {
-                setState(() {
-                  password = value;
-                });
+                password = value;
               },
               decoration: kTextFieldDecoration.copyWith(
                 hintText: 'Enter your password',
@@ -67,7 +66,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 24.0,
             ),
             RegisterButton(
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  final UserCredential? user =
+                      await auth.createUserWithEmailAndPassword(
+                          email: email, password: password);
+
+                  if (user != null) {
+                    Navigator.pushNamed(context, ChatScreen.name);
+                  }
+                } catch (e) {
+                  print(e);
+                }
+              },
             ),
           ],
         ),
