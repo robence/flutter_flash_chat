@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Hero(
-              tag: heroLogo,
+              tag: kHeroLogo,
               transitionOnUserGestures: true,
               child: SizedBox(
                 height: 200.0,

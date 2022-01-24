@@ -62,7 +62,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 return Row(
                   children: [
                     Hero(
-                      tag: heroLogo,
+                      tag: kHeroLogo,
                       transitionOnUserGestures: true,
                       child: SizedBox(
                         child: Image.asset('images/logo.png'),

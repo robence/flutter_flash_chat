@@ -18,4 +18,4 @@ const kMessageContainerDecoration = BoxDecoration(
   ),
 );
 
-const heroLogo = 'logo';
+const kHeroLogo = 'logo';
