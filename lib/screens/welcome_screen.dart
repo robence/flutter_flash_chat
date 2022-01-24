@@ -15,6 +15,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController controller;
+  late final Animation<double> animation;
 
   @override
   initState() {
@@ -22,7 +23,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
-      upperBound: 100.0,
+    );
+    animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.decelerate,
     );
 
     controller.forward();
@@ -62,7 +66,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       transitionOnUserGestures: true,
                       child: SizedBox(
                         child: Image.asset('images/logo.png'),
-                        height: controller.value,
+                        height: animation.value * 100,
                       ),
                     ),
                     Text(
