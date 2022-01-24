@@ -12,7 +12,28 @@ class WelcomeScreen extends StatefulWidget {
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController controller;
+
+  @override
+  initState() {
+    super.initState();
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+      upperBound: 100.0,
+    );
+
+    controller.forward();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
   goToLogin() {
     Navigator.pushNamed(context, LoginScreen.name);
   }
@@ -30,25 +51,30 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Hero(
-                  tag: heroLogo,
-                  transitionOnUserGestures: true,
-                  child: SizedBox(
-                    child: Image.asset('images/logo.png'),
-                    height: 60.0,
-                  ),
-                ),
-                const Text(
-                  'Flash Chat',
-                  style: TextStyle(
-                    fontSize: 45.0,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-              ],
+          children: [
+            AnimatedBuilder(
+              animation: controller,
+              builder: (context, child) {
+                return Row(
+                  children: [
+                    Hero(
+                      tag: heroLogo,
+                      transitionOnUserGestures: true,
+                      child: SizedBox(
+                        child: Image.asset('images/logo.png'),
+                        height: controller.value,
+                      ),
+                    ),
+                    Text(
+                      'Flash Chat',
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                            fontSize: 40.0,
+                            fontWeight: FontWeight.w900,
+                          ),
+                    ),
+                  ],
+                );
+              },
             ),
             const SizedBox(
               height: 48.0,
