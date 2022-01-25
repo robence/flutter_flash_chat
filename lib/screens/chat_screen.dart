@@ -42,6 +42,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     var textMessage = '';
+    final messageTextController = TextEditingController();
 
     Future<void> addMessage({required String sender, required String text}) {
       // Call the user's CollectionReference to add a new user
@@ -88,6 +89,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   Expanded(
                     child: TextField(
+                      controller: messageTextController,
                       onChanged: (value) {
                         textMessage = value;
                       },
@@ -103,6 +105,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         addMessage(
                             sender: loggedInUser.email!, text: textMessage);
                       }
+                      messageTextController.clear();
                     },
                     child: const Text(
                       'Send',
