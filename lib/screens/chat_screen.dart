@@ -151,35 +151,52 @@ class _TextMessagesState extends State<TextMessages> {
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data =
                 document.data()! as Map<String, dynamic>;
-            return Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    data['sender'],
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  Material(
-                    elevation: 5.0,
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: Colors.lightBlueAccent,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(data['text'],
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    fontSize: 19,
-                                    color: Colors.white,
-                                  )),
-                    ),
-                  ),
-                ],
-              ),
-            );
+            return MessageBubble(data: data);
           }).toList(),
         );
       },
+    );
+  }
+}
+
+class MessageBubble extends StatelessWidget {
+  const MessageBubble({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
+
+  final Map<String, dynamic> data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(
+            data['sender'],
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          Material(
+            elevation: 5.0,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30.0),
+              bottomLeft: Radius.circular(30.0),
+              bottomRight: Radius.circular(30.0),
+            ),
+            color: Colors.lightBlueAccent,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(data['text'],
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontSize: 19,
+                        color: Colors.white,
+                      )),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
