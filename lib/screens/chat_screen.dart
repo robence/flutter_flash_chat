@@ -70,8 +70,6 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               child: StreamBuilder(
@@ -150,13 +148,31 @@ class _TextMessagesState extends State<TextMessages> {
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data =
                 document.data()! as Map<String, dynamic>;
-            return ListTile(
-              title: Text(
-                data['sender'],
-                style: Theme.of(context).textTheme.bodyText1,
+            return Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    data['sender'],
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  Material(
+                    elevation: 5.0,
+                    borderRadius: BorderRadius.circular(30.0),
+                    color: Colors.lightBlueAccent,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(data['text'],
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    fontSize: 19,
+                                    color: Colors.white,
+                                  )),
+                    ),
+                  ),
+                ],
               ),
-              subtitle: Text(data['text'],
-                  style: Theme.of(context).textTheme.bodyText1),
             );
           }).toList(),
         );
