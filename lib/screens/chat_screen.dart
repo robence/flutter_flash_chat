@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flash_chat/constants.dart';
@@ -13,6 +14,8 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final auth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance;
+
   late User loggedInUser;
 
   @override
@@ -35,6 +38,21 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var textMessage = '';
+    CollectionReference messages =
+        FirebaseFirestore.instance.collection('messages');
+
+    Future<void> addMessage({required String sender, required String text}) {
+      // Call the user's CollectionReference to add a new user
+      return messages
+          .add({
+            'sender': sender, // John Doe
+            'text': text, // Stokes and Sons
+          })
+          .then((value) => print("Messages Added"))
+          .catchError((error) => print("Failed to add message: $error"));
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: null,
@@ -62,14 +80,20 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: TextField(
                       onChanged: (value) {
-                        //Do something with the user input.
+                        textMessage = value;
                       },
                       decoration: kMessageTextFieldDecoration,
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                            fontSize: 16,
+                          ),
                     ),
                   ),
                   TextButton(
                     onPressed: () {
-                      //Implement send functionality.
+                      if (loggedInUser.email != null) {
+                        addMessage(
+                            sender: loggedInUser.email!, text: textMessage);
+                      }
                     },
                     child: const Text(
                       'Send',
