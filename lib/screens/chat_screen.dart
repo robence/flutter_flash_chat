@@ -18,6 +18,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
   late User loggedInUser;
 
+  CollectionReference messages =
+      FirebaseFirestore.instance.collection('messages');
+
   @override
   void initState() {
     super.initState();
@@ -39,8 +42,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     var textMessage = '';
-    CollectionReference messages =
-        FirebaseFirestore.instance.collection('messages');
 
     Future<void> addMessage({required String sender, required String text}) {
       // Call the user's CollectionReference to add a new user
@@ -71,12 +72,12 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
+          children: [
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
+                children: [
                   Expanded(
                     child: TextField(
                       onChanged: (value) {
@@ -103,9 +104,63 @@ class _ChatScreenState extends State<ChatScreen> {
                 ],
               ),
             ),
+            Expanded(
+              child: StreamBuilder(
+                builder: (context, snapshot) {
+                  return const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: TextMessages(),
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),
+    );
+  }
+}
+
+class TextMessages extends StatefulWidget {
+  const TextMessages({Key? key}) : super(key: key);
+
+  @override
+  _TextMessagesState createState() => _TextMessagesState();
+}
+
+class _TextMessagesState extends State<TextMessages> {
+  final Stream<QuerySnapshot> _usersStream =
+      FirebaseFirestore.instance.collection('messages').snapshots();
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _usersStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Something went wrong',
+              style: Theme.of(context).textTheme.bodyText1);
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading", style: Theme.of(context).textTheme.bodyText1);
+        }
+
+        return ListView(
+          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data =
+                document.data()! as Map<String, dynamic>;
+            return ListTile(
+              title: Text(
+                data['sender'],
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              subtitle: Text(data['text'],
+                  style: Theme.of(context).textTheme.bodyText1),
+            );
+          }).toList(),
+        );
+      },
     );
   }
 }
