@@ -73,6 +73,16 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Expanded(
+              child: StreamBuilder(
+                builder: (context, snapshot) {
+                  return const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: TextMessages(),
+                  );
+                },
+              ),
+            ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -104,16 +114,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 ],
               ),
             ),
-            Expanded(
-              child: StreamBuilder(
-                builder: (context, snapshot) {
-                  return const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: TextMessages(),
-                  );
-                },
-              ),
-            )
           ],
         ),
       ),
