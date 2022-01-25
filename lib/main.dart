@@ -21,6 +21,7 @@ class FlashChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
         textTheme: const TextTheme(
           bodyText1: TextStyle(color: Colors.black54),
